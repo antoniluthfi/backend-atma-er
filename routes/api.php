@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\EventKasController;
 use App\Http\Controllers\Api\PengajarController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\GroupController;
+use App\Http\Controllers\Api\UserGroupsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +49,15 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('event-kas/{id}', [EventKasController::class, 'getDataById']);
     Route::post('event-kas', [EventKasController::class, 'create']);
     Route::put('event-kas/{id}', [EventKasController::class, 'update']);
+
+    Route::get('group/', [GroupController::class, 'index']);
+    Route::get('group/{user_id}', [GroupController::class, 'getDataByUserId']);
+    Route::post('group', [GroupController::class, 'create']);
+    Route::put('group/{id}', [GroupController::class, 'update']);
+
+    Route::get('user-group/{user_id}', [UserGroupsController::class, 'index']);
+    Route::post('user-group', [UserGroupsController::class, 'create']);
+    Route::put('user-group/{id}', [UserGroupsController::class, 'update']);
 
     Route::get('arus-kas/{id}', [ArusKasController::class, 'index']);
     Route::get('arus-kas/{id}/{user_id}', [ArusKasController::class, 'getDataPerUser']);

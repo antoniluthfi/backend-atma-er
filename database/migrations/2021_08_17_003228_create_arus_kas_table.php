@@ -16,7 +16,7 @@ class CreateArusKasTable extends Migration
         Schema::create('arus_kas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_kas_id');
-            $table->foreignId('users_id'); // ini untuk penyetor uang
+            $table->foreignId('user_id'); // ini untuk penyetor uang
             $table->boolean('jenis');
             $table->integer('nominal');
             $table->text('keterangan');

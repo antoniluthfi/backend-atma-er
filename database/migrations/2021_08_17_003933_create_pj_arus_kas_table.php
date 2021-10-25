@@ -16,7 +16,7 @@ class CreatePjArusKasTable extends Migration
         Schema::create('pj_arus_kas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('arus_kas_id');
-            $table->foreignId('users_id');
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }

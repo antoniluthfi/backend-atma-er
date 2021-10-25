@@ -15,7 +15,7 @@ class CreateArsipTable extends Migration
     {
         Schema::create('arsip', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('groups_id');
+            $table->foreignId('group_id');
             $table->string('nama_file');
             $table->string('jenis_file');
             $table->string('nama_kegiatan');

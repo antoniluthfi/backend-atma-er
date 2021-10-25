@@ -15,7 +15,7 @@ class CreateEventPengajianTable extends Migration
     {
         Schema::create('event_pengajian', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('groups_id');
+            $table->foreignId('group_id');
             $table->string('nama_event');
             $table->dateTime('waktu_mulai');
             $table->dateTime('waktu_selesai');

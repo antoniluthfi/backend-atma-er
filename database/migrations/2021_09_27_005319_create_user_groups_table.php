@@ -15,9 +15,10 @@ class CreateUserGroupsTable extends Migration
     {
         Schema::create('user_groups', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('groups_id');
-            $table->foreignId('users_id');
+            $table->foreignId('group_id');
+            $table->foreignId('user_id');
             $table->string('hak_akses');
+            $table->string('status');
             $table->timestamps();
         });
     }

@@ -13,7 +13,7 @@ class UserController extends Controller
     {
         return response()->json([
             'success' => true,
-            'result' => User::all()
+            'result' => User::with('userGroup')->get()
         ], 200);
     }
 
@@ -27,9 +27,11 @@ class UserController extends Controller
 
     public function getCurrentUser()
     {
+        $user = User::with('userGroup')->findOrFail(Auth::user()->id);
+
         return response()->json([
             'success' => true,
-            'result' => Auth::user()
+            'result' => $user
         ], 200);
     }
 
@@ -48,13 +50,15 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $input = $request->all();
-        
-        $user = User::findOrFail($id);
+        $input['nomorhp'] = '62' . $request->nomorhp;
+
+        $user = User::with('userGroup')->findOrFail($id);
         $user->fill($input)->save();
 
         return response()->json([
             'success' => true,
             'message' => 'Data berhasil diubah',
+            'result' => $user
         ], 200);
     }
 

@@ -15,7 +15,7 @@ class CreateEventKasTable extends Migration
     {
         Schema::create('event_kas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('groups_id');
+            $table->foreignId('group_id');
             $table->string('nama');
             $table->double('total_pemasukan', 15, 0)->default(0);
             $table->double('total_pengeluaran', 15, 0)->default(0);

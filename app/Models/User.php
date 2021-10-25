@@ -16,7 +16,10 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $table = 'users';
+    protected $fillable = [
+        'name', 'email', 'password', 'email_verified_at', 'alamat', 'nomorhp', 'nama_ayah', 'nama_ibu', 'tempat_lahir', 'tgl_lahir', 'jenis_kelamin', 'status', 'status_akun', 'foto_profil', 'hak_akses'
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -37,7 +40,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function OauthAccessToken() 
+    public function OauthAccessToken()
     {
         return $this->hasMany(OauthAccessToken::class);
     }
@@ -55,5 +58,10 @@ class User extends Authenticatable
     public function pjArusKas()
     {
         return $this->hasMany(PjArusKas::class);
+    }
+
+    public function userGroup()
+    {
+        return $this->hasMany(UserGroup::class)->with('group');
     }
 }

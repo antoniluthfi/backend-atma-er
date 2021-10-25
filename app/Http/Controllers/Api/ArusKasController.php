@@ -16,15 +16,15 @@ class ArusKasController extends Controller
         if ($id) {
             $total = EventKas::findOrFail($id);
             $perUser = ArusKas::with('users')
-                ->groupBy('event_kas_id', 'users_id')
-                ->selectRaw('id, event_kas_id, users_id, sum(nominal) as total')
+                ->groupBy('event_kas_id', 'user_id')
+                ->selectRaw('id, event_kas_id, user_id, sum(nominal) as total')
                 ->whereMonth('created_at', date('m'))
                 ->where('event_kas_id', $id)
                 ->where('jenis', '1')
-                ->where('users_id', '!=', '0')
+                ->where('user_id', '!=', '0')
                 ->get();
-            $bulan_ini = ArusKas::selectRaw('event_kas_id, users_id, jenis, sum(nominal) as total')
-                ->groupBy('event_kas_id', 'users_id', 'jenis')
+            $bulan_ini = ArusKas::selectRaw('event_kas_id, user_id, jenis, sum(nominal) as total')
+                ->groupBy('event_kas_id', 'user_id', 'jenis')
                 ->whereMonth('created_at', date('m'))
                 ->where('event_kas_id', $id)
                 ->first();
@@ -51,7 +51,7 @@ class ArusKasController extends Controller
     {
         $arusKas = ArusKas::with('users', 'eventKas', 'pjArusKas')
             ->where('event_kas_id', $id)
-            ->where('users_id', $user_id)
+            ->where('user_id', $user_id)
             ->orderBy('created_at', 'desc')
             ->limit(4)
             ->get();
@@ -101,7 +101,7 @@ class ArusKasController extends Controller
 
     public function getBelumBayarKas($id)
     {
-        $arusKas = ArusKas::select('users_id')
+        $arusKas = ArusKas::select('user_id')
             ->where('event_kas_id', $id)
             ->whereMonth('created_at', date('m'))
             ->get();
@@ -120,7 +120,7 @@ class ArusKasController extends Controller
     {
         $arusKas = ArusKas::create([
             'event_kas_id' => $request->event_kas_id,
-            'users_id' => $request->users_id,
+            'user_id' => $request->user_id,
             'jenis' => $request->jenis,
             'nominal' => $request->nominal,
             'keterangan' => $request->keterangan
@@ -129,7 +129,7 @@ class ArusKasController extends Controller
         if ($arusKas) {
             PjArusKas::create([
                 'arus_kas_id' => $arusKas->id,
-                'users_id' => $request->id_pj,
+                'user_id' => $request->id_pj,
             ]);
 
             $eventKas = EventKas::findOrFail($request->event_kas_id);
@@ -200,7 +200,7 @@ class ArusKasController extends Controller
         // update arus kas
         $arusKas->update([
             'event_kas_id' => $request->event_kas_id,
-            'users_id' => $request->users_id,
+            'user_id' => $request->user_id,
             'jenis' => $request->jenis,
             'nominal' => $request->nominal,
             'keterangan' => $request->keterangan
@@ -210,7 +210,7 @@ class ArusKasController extends Controller
             $pjArusKas = PjArusKas::where('arus_kas_id', $id)->first();
             $pjArusKas->update([
                 'arus_kas_id' => $arusKas->id,
-                'users_id' => $request->id_pj,
+                'user_id' => $request->id_pj,
             ]);
         }
 

@@ -15,8 +15,8 @@ class CreateLogAktifitasTable extends Migration
     {
         Schema::create('log_aktifitas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('groups_id');
-            $table->foreignId('users_id');
+            $table->foreignId('group_id');
+            $table->foreignId('user_id');
             $table->string('method');
             $table->string('keterangan');
             $table->timestamps();

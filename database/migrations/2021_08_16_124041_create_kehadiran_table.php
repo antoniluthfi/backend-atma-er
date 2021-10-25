@@ -15,8 +15,8 @@ class CreateKehadiranTable extends Migration
     {
         Schema::create('kehadiran', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('groups_id');
-            $table->foreignId('users_id');
+            $table->foreignId('group_id');
+            $table->foreignId('user_id');
             $table->foreignId('event_pengajian_id');
             $table->dateTime('waktu_datang');
             $table->boolean('status_kehadiran');
