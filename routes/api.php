@@ -45,10 +45,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('pengajar/{id}', [PengajarController::class, 'update']);
     Route::delete('pengajar/{id}', [PengajarController::class, 'delete']);
 
-    Route::get('event-kas', [EventKasController::class, 'index']);
+    Route::get('event-kas/group/{group_id}', [EventKasController::class, 'index']);
     Route::get('event-kas/{id}', [EventKasController::class, 'getDataById']);
     Route::post('event-kas', [EventKasController::class, 'create']);
     Route::put('event-kas/{id}', [EventKasController::class, 'update']);
+    Route::delete('event-kas/{id}', [EventKasController::class, 'delete']);
 
     Route::get('group/', [GroupController::class, 'index']);
     Route::get('group/{user_id}', [GroupController::class, 'getDataByUserId']);
