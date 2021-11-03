@@ -57,6 +57,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('group/{id}', [GroupController::class, 'update']);
 
     Route::get('user-group/{user_id}', [UserGroupsController::class, 'index']);
+    Route::get('user-group/list-user/{group_id}', [UserGroupsController::class, 'getListUser']);
     Route::post('user-group', [UserGroupsController::class, 'create']);
     Route::put('user-group/{id}', [UserGroupsController::class, 'update']);
 

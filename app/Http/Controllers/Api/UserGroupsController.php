@@ -16,6 +16,19 @@ class UserGroupsController extends Controller
         ], 200);
     }
 
+    public function getListUser($group_id)
+    {
+        $list = UserGroup::with('user')
+                ->where('group_id', $group_id)
+                ->where('status', 'terdaftar')
+                ->get();
+
+        return response()->json([
+            'success' => true,
+            'result' => $list
+        ], 200);
+    }
+
     public function create(Request $request)
     {
         UserGroup::create([

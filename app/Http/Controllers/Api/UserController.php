@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,7 +40,16 @@ class UserController extends Controller
     {
         $input = $request->all();
         $input['password'] = bcrypt(strtolower($input['name']));
-        User::create($input);
+        $user = User::create($input);
+
+        if($user) {
+            UserGroup::create([
+                'group_id' => $request->group_id,
+                'user_id' => $request->user_id,
+                'hak_akses' => 'anggota',
+                'status' => 'terdaftar'
+            ]);
+        }
 
         return response()->json([
             'success' => true,
@@ -50,7 +60,11 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $input = $request->all();
-        $input['nomorhp'] = '62' . $request->nomorhp;
+        if(strpos($request->nomorhp, '62') !== false) {
+            $input['nomorhp'] = $request->nomorhp;
+        } else {
+            $input['nomorhp'] = '62' . $request->nomorhp;
+        }
 
         $user = User::with('userGroup')->findOrFail($id);
         $user->fill($input)->save();
