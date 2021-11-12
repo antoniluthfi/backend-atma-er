@@ -34,6 +34,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users',
+            'nomorhp' => 'required',
             'password' => 'required',
             'c_password' => 'required|same:password'
         ]);
@@ -51,7 +52,7 @@ class AuthController extends Controller
         $input['hak_akses'] = 'user';
         
         // upload foto
-        if($request->hasFile("photo"))
+        // if($request->hasFile("photo"))
         $user = User::create($input);
 
         return response()->json([

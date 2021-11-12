@@ -14,8 +14,8 @@ class ArusKasController extends Controller
     public function index($id)
     {
         if ($id) {
-            $total = EventKas::findOrFail($id);
-            $perUser = ArusKas::with('users')
+            $eventKas = EventKas::findOrFail($id);
+            $perUser = ArusKas::with('user')
                 ->groupBy('event_kas_id', 'user_id')
                 ->selectRaw('id, event_kas_id, user_id, sum(nominal) as total')
                 ->whereMonth('created_at', date('m'))
@@ -32,13 +32,13 @@ class ArusKasController extends Controller
             return response()->json([
                 'success' => true,
                 'result' => [
-                    'total' => $total,
+                    'kas' => $eventKas,
                     'per_user' => $perUser,
                     'bulan_ini' => $bulan_ini
                 ]
             ], 200);
         } else {
-            $arusKas = ArusKas::with('eventKas', 'pjArusKas', 'users')->get();
+            $arusKas = ArusKas::with('eventKas', 'pjArusKas', 'user')->get();
 
             return response()->json([
                 'success' => true,
@@ -49,7 +49,7 @@ class ArusKasController extends Controller
 
     public function getDataPerUser($id, $user_id)
     {
-        $arusKas = ArusKas::with('users', 'eventKas', 'pjArusKas')
+        $arusKas = ArusKas::with('user', 'eventKas', 'pjArusKas')
             ->where('event_kas_id', $id)
             ->where('user_id', $user_id)
             ->orderBy('created_at', 'desc')
@@ -64,7 +64,7 @@ class ArusKasController extends Controller
 
     public function getDataPerEvent($id)
     {
-        $pemasukan = ArusKas::with('users', 'pjArusKas')
+        $pemasukan = ArusKas::with('user', 'pjArusKas')
             ->where('event_kas_id', $id)
             ->where('jenis', '1')
             ->orderBy('created_at', 'desc')
@@ -88,7 +88,7 @@ class ArusKasController extends Controller
 
     public function getDataPerEventDanBulan($id)
     {
-        $arusKas = ArusKas::with('users', 'pjArusKas')
+        $arusKas = ArusKas::with('user', 'pjArusKas')
             ->where('event_kas_id', $id)
             ->whereMonth('created_at', date('m'))
             ->get();
@@ -105,13 +105,13 @@ class ArusKasController extends Controller
             ->where('event_kas_id', $id)
             ->whereMonth('created_at', date('m'))
             ->get();
-        $users = User::select('id', 'name')->get();
+        $user = User::select('id', 'name')->get();
 
         return response()->json([
             'success' => true,
             'result' => [
                 'arus_kas' => $arusKas,
-                'users' => $users
+                'user' => $user
             ]
         ], 200);
     }

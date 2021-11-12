@@ -19,10 +19,10 @@ class ArusKas extends Model
 
     public function pjArusKas()
     {
-        return $this->hasMany(PjArusKas::class)->with('users');
+        return $this->hasMany(PjArusKas::class)->with('user');
     }
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class)->select('id', 'name', 'email');
     }

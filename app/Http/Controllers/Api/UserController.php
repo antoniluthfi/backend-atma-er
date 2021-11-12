@@ -42,7 +42,7 @@ class UserController extends Controller
         $input['password'] = bcrypt(strtolower($input['name']));
         $user = User::create($input);
 
-        if($user) {
+        if ($user) {
             UserGroup::create([
                 'group_id' => $request->group_id,
                 'user_id' => $request->user_id,
@@ -60,7 +60,10 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $input = $request->all();
-        if(strpos($request->nomorhp, '62') !== false) {
+        unset($input['group_id']);
+        unset($input['hak_akses']);
+
+        if (strpos($request->nomorhp, '62') !== false) {
             $input['nomorhp'] = $request->nomorhp;
         } else {
             $input['nomorhp'] = '62' . $request->nomorhp;
@@ -68,6 +71,16 @@ class UserController extends Controller
 
         $user = User::with('userGroup')->findOrFail($id);
         $user->fill($input)->save();
+
+        $userGroup = UserGroup::where('group_id', $request->group_id)
+            ->where('user_id', $id)
+            ->first();
+
+        if ($userGroup) {
+            $userGroup->update([
+                'hak_akses' => $request->hak_akses
+            ]);
+        }
 
         return response()->json([
             'success' => true,

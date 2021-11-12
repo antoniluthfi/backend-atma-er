@@ -55,11 +55,14 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('group/{user_id}', [GroupController::class, 'getDataByUserId']);
     Route::post('group', [GroupController::class, 'create']);
     Route::put('group/{id}', [GroupController::class, 'update']);
+    Route::put('group/foto-profil/{id}', [GroupController::class, 'updateProfilePhoto']);
 
     Route::get('user-group/{user_id}', [UserGroupsController::class, 'index']);
     Route::get('user-group/list-user/{group_id}', [UserGroupsController::class, 'getListUser']);
+    Route::get('user-group/list-pending/{group_id}', [UserGroupsController::class, 'getListPending']);
     Route::post('user-group', [UserGroupsController::class, 'create']);
-    Route::put('user-group/{id}', [UserGroupsController::class, 'update']);
+    Route::put('user-group/{group_id}/{user_id}', [UserGroupsController::class, 'update']);
+    Route::delete('user-group/{group_id}/{user_id}', [UserGroupsController::class, 'delete']);
 
     Route::get('arus-kas/{id}', [ArusKasController::class, 'index']);
     Route::get('arus-kas/{id}/{user_id}', [ArusKasController::class, 'getDataPerUser']);

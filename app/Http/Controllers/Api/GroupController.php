@@ -20,18 +20,18 @@ class GroupController extends Controller
     public function getDataByUserId($user_id)
     {
         $group = Group::all();
+
         foreach ($group as $key => $val) {
             $terdaftar = UserGroup::select('status')
-                ->where('group_id', $val->id)
+                ->where('group_id', $val['id'])
                 ->where('user_id', $user_id)
-                ->where('status', 'terdaftar')
                 ->first();
             $admin_pembuat = UserGroup::with('user')
-                ->where('group_id', $val->id)
+                ->where('group_id', $val['id'])
                 ->where('hak_akses', 'admin pembuat')
                 ->first();
             $group[$key]->nomorhp = $admin_pembuat->user->nomorhp;
-            $group[$key]->status_daftar = $terdaftar->status ? $terdaftar->status : "tidak terdaftar";
+            $group[$key]->status_daftar = $terdaftar ? $terdaftar->status : "tidak terdaftar";
         }
 
         return response()->json([
@@ -45,7 +45,7 @@ class GroupController extends Controller
         Group::create([
             'nama' => $request->nama,
             'deskripsi' => $request->deskripsi,
-            'jumlah_anggota' => $request->jumlah_anggota,
+            'jumlah_anggota' => 1,
             'foto_profil' => $request->foto_profil
         ]);
 
@@ -55,7 +55,12 @@ class GroupController extends Controller
         ], 200);
     }
 
-    public function update(Request $request, $id)
+    public function updateProfilePhoto(Request $request, $id)
     {
+        return response()->json([
+            'success' => true,
+            'message' => 'Profil berhasil diperbarui',
+            'result' => $request
+        ], 200);
     }
 }
