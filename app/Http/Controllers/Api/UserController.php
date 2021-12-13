@@ -103,6 +103,25 @@ class UserController extends Controller
         ], 200);
     }
 
+    public function updateProfilePhoto(Request $request, $id)
+    {
+        $user = User::with('userGroup')->findOrFail($id);
+        if($user->foto_profil) {
+            unlink(public_path($user->foto_profil));    
+        }
+        
+        $request->file->move(public_path('users'), $request->file->getClientOriginalName());
+        $user->update([
+            'foto_profil' => 'users/' . $request->file->getClientOriginalName()
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Foto profil berhasil diubah',
+            'result' => $user
+        ], 200);
+    }
+
     public function delete($id)
     {
         $user = User::findOrFail($id);
@@ -111,6 +130,24 @@ class UserController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Data berhasil dihapus'
+        ], 200);
+    }
+
+    public function deleteProfilePhoto($id)
+    {
+        $user = User::with('userGroup')->findOrFail($id);
+        if($user->foto_profil) {
+            unlink(public_path($user->foto_profil));    
+        }
+        
+        $user->update([
+            'foto_profil' => ""
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Foto profil berhasil dihapus',
+            'result' => $user
         ], 200);
     }
 }

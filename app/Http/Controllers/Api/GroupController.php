@@ -40,14 +40,28 @@ class GroupController extends Controller
         ], 200);
     }
 
-    public function create(Request $request)
+    public function create(Request $request, $name, $description, $status, $user_id)
     {
-        Group::create([
-            'nama' => $request->nama,
-            'deskripsi' => $request->deskripsi,
+        if ($request->file) {
+            $request->file->move(public_path('groups'), $request->file->getClientOriginalName());
+        }
+
+        $group = Group::create([
+            'nama' => $name,
+            'deskripsi' => $description,
             'jumlah_anggota' => 1,
-            'foto_profil' => $request->foto_profil
+            'foto_profil' => $request->file ? "groups/" . $request->file->getClientOriginalName() : "",
+            'status' => $status
         ]);
+
+        if ($group) {
+            UserGroup::create([
+                'group_id' => $group->id,
+                'user_id' => $user_id,
+                'hak_akses' => 'admin pembuat',
+                'status' => 'terdaftar'
+            ]);
+        }
 
         return response()->json([
             'success' => true,

@@ -14,9 +14,15 @@ class EventKasController extends Controller
             'success' => true,
             'result' => [
                 'event' => EventKas::where('group_id', $group_id)->get(),
-                'pemasukan' => EventKas::where('status', '1')->sum("total_pemasukan"),
-                'pengeluaran' => EventKas::where('status', '1')->sum("total_pengeluaran"),
-                'total' => EventKas::where('status', '1')->sum("total_kas")
+                'pemasukan' => EventKas::where('status', '1')
+                    ->where('group_id', $group_id)
+                    ->sum("total_pemasukan"),
+                'pengeluaran' => EventKas::where('status', '1')
+                    ->where('group_id', $group_id)
+                    ->sum("total_pengeluaran"),
+                'total' => EventKas::where('status', '1')
+                    ->where('group_id', $group_id)
+                    ->sum("total_kas")
             ]
         ], 200);
     }

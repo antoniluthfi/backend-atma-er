@@ -35,9 +35,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('user/{id}', [UserController::class, 'getDataById']);
     Route::get('current/user', [UserController::class, 'getCurrentUser']);
     Route::post('user', [UserController::class, 'create']);
+    Route::post('user/photo/{id}', [UserController::class, 'updateProfilePhoto']);
     Route::put('user/{id}', [UserController::class, 'update']);
     Route::put('user/update/password', [UserController::class, 'updatePassword']);
     Route::delete('user/{id}', [UserController::class, 'delete']);
+    Route::delete('user/photo/{id}', [UserController::class, 'deleteProfilePhoto']);
 
     Route::get('pengajar', [PengajarController::class, 'index']);
     Route::get('pengajar/{id}', [PengajarController::class, 'getDataById']);
@@ -53,7 +55,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('group/', [GroupController::class, 'index']);
     Route::get('group/{user_id}', [GroupController::class, 'getDataByUserId']);
-    Route::post('group', [GroupController::class, 'create']);
+    Route::post('group/{name}/{description}/{status}/{user_id}', [GroupController::class, 'create']);
     Route::put('group/{id}', [GroupController::class, 'update']);
     Route::put('group/foto-profil/{id}', [GroupController::class, 'updateProfilePhoto']);
 

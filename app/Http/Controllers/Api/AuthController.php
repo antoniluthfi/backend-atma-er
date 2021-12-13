@@ -15,7 +15,10 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status_akun' => '1'])) {
-            $user = User::with('userGroup')->findOrFail(Auth::user()->id);                
+            $user = User::with('userGroup')->findOrFail(Auth::user()->id);    
+            $user->update([
+                'fcm_token' => $request->fcm_token
+            ]);          
             $success['user'] = $user;
             $success['token'] = $user->createToken('usman-sidomulyo', [])->accessToken;
 
