@@ -68,6 +68,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('arus-kas/{id}', [ArusKasController::class, 'index']);
     Route::get('arus-kas/{id}/{user_id}', [ArusKasController::class, 'getDataPerUser']);
+    Route::get('arus-kas/detail-per-month/{id}/{month}/{year}', [ArusKasController::class, 'getDataPerBulan']);
     Route::get('arus-kas/event/{id}/list', [ArusKasController::class, 'getDataPerEvent']);
     Route::get('arus-kas/event/{id}/list-and-month', [ArusKasController::class, 'getDataPerEventDanBulan']);
     Route::get('arus-kas/list/belum-bayar/{id}', [ArusKasController::class, 'getBelumBayarKas']);
